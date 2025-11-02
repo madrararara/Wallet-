@@ -1,293 +1,202 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>دفتر المحفظة الذكي</title>
-<style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>📒 مدير المحفظة المالية</title>
+  <style>
     body {
-        font-family: "Cairo", sans-serif;
-        background-color: #2f2f2f;
-        color: white;
-        text-align: center;
-        padding: 20px;
+      font-family: 'Tajawal', sans-serif;
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    .container {
+      max-width: 850px;
+      margin: 40px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+
+    .inputs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 15px;
+      margin-bottom: 15px;
     }
 
     input, select {
-        padding: 8px;
-        margin: 5px;
-        border-radius: 8px;
-        border: none;
-        width: 140px;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    input:focus, select:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 5px rgba(0,123,255,0.3);
     }
 
     button {
-        background-color: #7e57c2;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 10px;
-        margin: 10px;
-        cursor: pointer;
-        font-weight: bold;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s;
     }
 
-    button:hover {
-        background-color: #9c6df0;
+    .add-btn {
+      background-color: #007bff;
+      color: white;
+      margin-right: 10px;
+    }
+
+    .delete-btn {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .add-btn:hover {
+      background-color: #0069d9;
+    }
+
+    .delete-btn:hover {
+      background-color: #c82333;
     }
 
     table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-        background-color: #3d3d3d;
-        border-radius: 10px;
-        overflow: hidden;
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 25px;
     }
 
     th, td {
-        padding: 10px;
-        border-bottom: 1px solid #555;
+      border: 1px solid #dee2e6;
+      padding: 10px;
+      text-align: center;
     }
 
-    .income { color: #4caf50; }
-    .expense { color: #ff5252; }
-
-    .summary, .monthly-summary {
-        background-color: #444;
-        padding: 10px;
-        border-radius: 10px;
-        margin-top: 15px;
-        text-align: center;
+    th {
+      background-color: #f1f1f1;
     }
 
-    .summary strong, .monthly-summary strong {
-        color: #ffc107;
+    tr:nth-child(even) {
+      background-color: #fafafa;
     }
 
-    .chart-area {
-        margin-top: 25px;
-        padding: 15px;
-        background-color: #383838;
-        border-radius: 12px;
+    .stats {
+      margin-top: 25px;
+      text-align: center;
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 10px;
+      font-weight: bold;
     }
-
-    canvas {
-        background: #2a2a2a;
-        border-radius: 10px;
-        margin-top: 10px;
-        width: 100%;
-        max-height: 300px;
-    }
-
-    .select-box {
-        transform: scale(1.2);
-    }
-</style>
+  </style>
 </head>
 <body>
+  <div class="container">
+    <h1>📒 مدير المحفظة المالية</h1>
+    
+    <div class="inputs">
+      <input type="date" id="date" placeholder="اختر تاريخ">
+      <input type="text" id="desc" placeholder="اكتب وصف العملية">
+      <input type="number" id="amount" placeholder="ادخل المبلغ">
+      <select id="type">
+        <option value="مدخول">💵 مدخول</option>
+        <option value="خسائر">💸 خسائر</option>
+      </select>
+      <button class="add-btn" onclick="addEntry()">➕ أضف</button>
+    </div>
 
-<h2>💼 دفتر المحفظة الذكي</h2>
+    <table id="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>التاريخ</th>
+          <th>الوصف</th>
+          <th>المبلغ</th>
+          <th>النوع</th>
+          <th>اختر للحذف</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
 
-<input type="text" id="desc" placeholder="البيان">
-<select id="type">
-    <option value="دخل">دخل</option>
-    <option value="خروج">خروج</option>
-</select>
-<input type="number" id="amount" placeholder="القيمة">
-<input type="date" id="date">
-<br>
-<button onclick="addTransaction()">إضافة</button>
+    <button class="delete-btn" onclick="deleteSelected()">🗑️ حذف المحدد</button>
 
-<table id="records">
-    <tr>
-        <th>الرقم</th>
-        <th>البيان</th>
-        <th>النوع</th>
-        <th>القيمة</th>
-        <th>التاريخ</th>
-    </tr>
-</table>
+    <div class="stats" id="stats">
+      💰 المجموع: 0 درهم | 🟢 الأرباح: 0 | 🔴 الخسائر: 0
+    </div>
+  </div>
 
-<div class="summary">
-    💰 إجمالي الدخل: <strong id="totalIncome">0</strong> |
-    💸 إجمالي المصاريف: <strong id="totalExpenses">0</strong> |
-    🧮 الرصيد الصافي: <strong id="netBalance">0</strong>
-</div>
+  <script>
+    let entries = JSON.parse(localStorage.getItem('walletEntries')) || [];
 
-<div class="monthly-summary">
-    <h3>📊 ملخص شهري</h3>
-    <div id="monthlyStats">لا توجد بيانات بعد</div>
-</div>
+    function updateTable() {
+      const tbody = document.querySelector("#table tbody");
+      tbody.innerHTML = "";
+      let total = 0, gains = 0, losses = 0;
 
-<div class="chart-area">
-    <h3>📈 تطور الأرباح الشهرية</h3>
-    <canvas id="chart"></canvas>
-</div>
-
-<button onclick="enableSelection()">🗑️ اختر للحذف</button>
-<button onclick="clearAll()">🗑️ مسح الكل</button>
-<button onclick="printPage()">🖨️ طباعة</button>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    let transactions = JSON.parse(localStorage.getItem("transactions")) || [];
-    let selectionMode = false;
-
-    function saveData() {
-        localStorage.setItem("transactions", JSON.stringify(transactions));
-    }
-
-    function renderTable() {
-        const table = document.getElementById("records");
-        table.innerHTML = `
-            <tr>
-                <th>الرقم</th>
-                <th>البيان</th>
-                <th>النوع</th>
-                <th>القيمة</th>
-                <th>التاريخ</th>
-                ${selectionMode ? "<th>اختيار</th>" : ""}
-            </tr>
+      entries.forEach((entry, index) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${index}</td>
+          <td>${entry.date}</td>
+          <td>${entry.desc}</td>
+          <td>${entry.amount}</td>
+          <td>${entry.type}</td>
+          <td><input type="checkbox" data-index="${index}"></td>
         `;
+        tbody.appendChild(tr);
 
-        let totalIncome = 0;
-        let totalExpenses = 0;
+        if (entry.type === "مدخول") gains += entry.amount;
+        else losses += entry.amount;
+      });
 
-        transactions.forEach((t, i) => {
-            const row = document.createElement("tr");
-            const cls = t.type === "دخل" ? "income" : "expense";
-            row.innerHTML = `
-                <td>${i}</td>
-                <td>${t.desc}</td>
-                <td class="${cls}">${t.type}</td>
-                <td>${t.amount}</td>
-                <td>${t.date}</td>
-                ${selectionMode ? `<td><input type='checkbox' class='select-box' data-index='${i}'></td>` : ""}
-            `;
-            table.appendChild(row);
-
-            if (t.type === "دخل") totalIncome += t.amount;
-            else totalExpenses += t.amount;
-        });
-
-        const net = totalIncome - totalExpenses;
-        document.getElementById("totalIncome").textContent = totalIncome;
-        document.getElementById("totalExpenses").textContent = totalExpenses;
-        document.getElementById("netBalance").textContent = net;
-        renderMonthlyStats();
+      total = gains - losses;
+      document.getElementById("stats").innerText = `💰 المجموع: ${total} درهم | 🟢 الأرباح: ${gains} | 🔴 الخسائر: ${losses}`;
+      localStorage.setItem('walletEntries', JSON.stringify(entries));
     }
 
-    function addTransaction() {
-        const desc = document.getElementById("desc").value.trim();
-        const type = document.getElementById("type").value;
-        const amount = parseFloat(document.getElementById("amount").value);
-        const date = document.getElementById("date").value || new Date().toISOString().split("T")[0];
+    function addEntry() {
+      const date = document.getElementById("date").value;
+      const desc = document.getElementById("desc").value;
+      const amount = parseFloat(document.getElementById("amount").value);
+      const type = document.getElementById("type").value;
 
-        if (!desc || isNaN(amount)) return alert("يرجى إدخال البيان والقيمة!");
+      if (!date || !desc || isNaN(amount)) {
+        alert("يرجى ملء كل الخانات!");
+        return;
+      }
 
-        transactions.push({ desc, type, amount, date });
-        saveData();
-        renderTable();
+      entries.push({ date, desc, amount, type });
+      updateTable();
 
-        document.getElementById("desc").value = "";
-        document.getElementById("amount").value = "";
-        document.getElementById("date").value = "";
-    }
-
-    function renderMonthlyStats() {
-        const stats = {};
-        transactions.forEach(t => {
-            const month = t.date.slice(0, 7); // YYYY-MM
-            if (!stats[month]) stats[month] = { income: 0, expense: 0 };
-            if (t.type === "دخل") stats[month].income += t.amount;
-            else stats[month].expense += t.amount;
-        });
-
-        const container = document.getElementById("monthlyStats");
-        container.innerHTML = "";
-
-        const months = Object.keys(stats);
-        if (months.length === 0) {
-            container.textContent = "لا توجد بيانات بعد";
-            return;
-        }
-
-        let labels = [], data = [];
-
-        months.forEach(m => {
-            const net = stats[m].income - stats[m].expense;
-            labels.push(m);
-            data.push(net);
-
-            const color = net >= 0 ? "green" : "red";
-            const div = document.createElement("div");
-            div.innerHTML = `${m}: <span style="color:${color}">${net >= 0 ? "ربح" : "خسارة"} ${net}</span>`;
-            container.appendChild(div);
-        });
-
-        renderChart(labels, data);
-    }
-
-    function renderChart(labels, data) {
-        const ctx = document.getElementById("chart").getContext("2d");
-        if (window.chartInstance) window.chartInstance.destroy();
-        window.chartInstance = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'صافي الأرباح الشهرية',
-                    data: data,
-                    backgroundColor: data.map(v => v >= 0 ? '#4caf50' : '#ff5252'),
-                }]
-            },
-            options: {
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: { beginAtZero: true }
-                }
-            }
-        });
-    }
-
-    function enableSelection() {
-        selectionMode = !selectionMode;
-        renderTable();
-        const btn = document.querySelector('button[onclick="enableSelection()"]');
-        btn.textContent = selectionMode ? "🗑️ حذف المحدد" : "🗑️ اختر للحذف";
-        if (selectionMode) btn.onclick = deleteSelected;
-        else btn.onclick = enableSelection;
+      document.getElementById("desc").value = "";
+      document.getElementById("amount").value = "";
     }
 
     function deleteSelected() {
-        const selected = Array.from(document.querySelectorAll('.select-box:checked')).map(cb => +cb.dataset.index);
-        if (selected.length === 0) return alert("اختر صفوف للحذف أولاً!");
-        if (!confirm("هل تريد حذف العناصر المحددة؟")) return;
-
-        transactions = transactions.filter((_, i) => !selected.includes(i));
-        saveData();
-        selectionMode = false;
-        renderTable();
-        const btn = document.querySelector('button[onclick="deleteSelected()"]');
-        btn.textContent = "🗑️ اختر للحذف";
-        btn.onclick = enableSelection;
+      const checkboxes = document.querySelectorAll("input[type='checkbox']:checked");
+      const indexes = Array.from(checkboxes).map(cb => parseInt(cb.dataset.index));
+      entries = entries.filter((_, i) => !indexes.includes(i));
+      updateTable();
     }
 
-    function clearAll() {
-        if (confirm("هل تريد مسح جميع البيانات؟")) {
-            transactions = [];
-            saveData();
-            renderTable();
-        }
-    }
-
-    function printPage() {
-        window.print();
-    }
-
-    renderTable();
-</script>
-
+    updateTable();
+  </script>
 </body>
 </html>
