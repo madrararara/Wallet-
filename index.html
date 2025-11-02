@@ -110,7 +110,7 @@
     <tr><th>الشهر</th><th>المداخيل</th><th>المصاريف</th><th>الرصيد</th></tr>
   </table>
 </div><script>
-let data = [];
+let data = JSON.parse(localStorage.getItem('walletData')) || [];
 
 function addEntry() {
   const desc = document.getElementById('desc').value.trim();
@@ -121,15 +121,28 @@ function addEntry() {
   const now = new Date();
   const day = String(now.getDate()).padStart(2, '0');
   const month = String(now.getMonth() + 1).padStart(2, '0');
+  const year = now.getFullYear();
+  const week = getWeekNumber(now);
   const date = `${day}/${month}`;
 
-  data.push({ desc, amount, type, date });
+  data.push({ desc, amount, type, date, week, month, year });
+  saveData();
   render();
 }
 
 function deleteEntry(index) {
   data.splice(index, 1);
+  saveData();
   render();
+}
+
+function saveData() {
+  localStorage.setItem('walletData', JSON.stringify(data));
+}
+
+function getWeekNumber(d) {
+  const onejan = new Date(d.getFullYear(), 0, 1);
+  return Math.ceil((((d - onejan) / 86400000) + onejan.getDay() + 1) / 7);
 }
 
 function render() {
@@ -156,6 +169,8 @@ function render() {
   }
 
   updateStats();
+  updateWeeklyStats();
+  updateMonthlyStats();
 }
 
 function updateStats() {
@@ -168,5 +183,42 @@ function updateStats() {
   document.getElementById('totalExpense').textContent = expense.toLocaleString('en-US');
   document.getElementById('balance').textContent = (income - expense).toLocaleString('en-US');
 }
+
+function updateWeeklyStats() {
+  const weeksTable = document.getElementById('weeksTable');
+  weeksTable.innerHTML = '<tr><th>الأسبوع</th><th>المداخيل</th><th>المصاريف</th><th>الرصيد</th></tr>';
+  const grouped = {};
+  data.forEach(e => {
+    if (!grouped[e.week]) grouped[e.week] = { income: 0, expense: 0 };
+    if (e.type === 'income') grouped[e.week].income += e.amount;
+    else grouped[e.week].expense += e.amount;
+  });
+  const weeks = Object.keys(grouped).slice(-3);
+  weeks.forEach(w => {
+    const g = grouped[w];
+    const balance = g.income - g.expense;
+    weeksTable.innerHTML += `<tr><td>${w}</td><td class='income'>${g.income.toLocaleString('en-US')}</td><td class='expense'>${g.expense.toLocaleString('en-US')}</td><td>${balance.toLocaleString('en-US')}</td></tr>`;
+  });
+}
+
+function updateMonthlyStats() {
+  const monthsTable = document.getElementById('monthsTable');
+  monthsTable.innerHTML = '<tr><th>الشهر</th><th>المداخيل</th><th>المصاريف</th><th>الرصيد</th></tr>';
+  const grouped = {};
+  data.forEach(e => {
+    const key = `${e.year}-${e.month}`;
+    if (!grouped[key]) grouped[key] = { income: 0, expense: 0 };
+    if (e.type === 'income') grouped[key].income += e.amount;
+    else grouped[key].expense += e.amount;
+  });
+  const months = Object.keys(grouped).slice(-3);
+  months.forEach(m => {
+    const g = grouped[m];
+    const balance = g.income - g.expense;
+    monthsTable.innerHTML += `<tr><td>${m}</td><td class='income'>${g.income.toLocaleString('en-US')}</td><td class='expense'>${g.expense.toLocaleString('en-US')}</td><td>${balance.toLocaleString('en-US')}</td></tr>`;
+  });
+}
+
+render();
 </script></body>
 </html>
