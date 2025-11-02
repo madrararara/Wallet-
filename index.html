@@ -1,194 +1,172 @@
-<!doctype html>
-
-<html lang="ar" dir="rtl">
+<!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>محفظتي</title>
-  <style>
-    :root{
-      --bg:#000000;
-      --card:#1f1f1f;
-      --muted:#2b2b2b;
-      --cyan:#00bcd4;
-      --accent:#00bcd4;
-      --income:#2ecc71;
-      --expense:#e74c3c;
-      --text:#e8e8e8;
-      --radius:14px;
-      --gap:12px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: "Segoe UI", Tahoma, Arial, "Noto Kufi Arabic", sans-serif;
-      background:var(--bg);
-      color:var(--text);
-      -webkit-font-smoothing:antialiased;
-      display:flex;
-      justify-content:center;
-      padding:18px 8px;
-    }
-    .screen{
-      width:420px;
-      max-width:100%;
-      display:flex;
-      flex-direction:column;
-      gap:var(--gap);
-    }
-    header{display:flex;align-items:center;justify-content:space-between}
-    h1{
-      margin:0;
-      font-size:24px;
-    }
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent), var(--card);
-      border-radius:var(--radius);
-      padding:14px;
-      box-shadow:0 6px 18px rgba(0,0,0,0.6);
-    }
-    label{display:block;font-size:13px;margin-bottom:6px;color:#cfcfcf}
-    input[type="text"], input[type="number"], select, input[type="date"]{
-      width:100%;
-      background:var(--muted);
-      border:1px solid rgba(255,255,255,0.04);
-      padding:10px 12px;
-      border-radius:10px;
-      color:var(--text);
-      outline:none;
-      font-size:15px;
-    }
-    .btn{
-      display:inline-block;padding:10px 16px;border-radius:12px;background:var(--cyan);color:#002428;font-weight:700;border:none;font-size:15px;cursor:pointer;
-      box-shadow:0 6px 14px rgba(0,188,212,0.12);
-    }
-    .entries{display:flex;flex-direction:column;gap:10px;margin-top:6px}
-    .entry-day{margin-top:10px;border-top:1px solid rgba(255,255,255,0.05);padding-top:6px}
-    .entry{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:10px;background:rgba(0,0,0,0.16)}
-    .val-income{color:var(--income);font-weight:700}
-    .val-expense{color:var(--expense);font-weight:700}
-    .table{width:100%;border-collapse:collapse;margin-top:8px}
-    .table th,.table td{padding:8px 6px;text-align:right;font-size:14px}
-    .table thead th{color:#bdbdbd;font-size:13px}
-    .stats{display:flex;gap:8px;flex-wrap:wrap}
-    .stat{flex:1;min-width:120px;padding:12px;border-radius:12px;background:rgba(255,255,255,0.02);text-align:center}
-    .stat .value{font-weight:800;font-size:18px}
-    .section-title{font-size:14px;color:#cfcfcf;margin-bottom:6px}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>محفظتي</title>
+<style>
+  body {
+    background-color: #000;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  h1 {
+    color: cyan;
+    margin-bottom: 15px;
+  }
+  .card {
+    background-color: #2c2c2c;
+    border-radius: 15px;
+    padding: 15px;
+    width: 95%;
+    max-width: 420px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  }
+  input, select, button {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+  }
+  input, select {
+    background-color: #3a3a3a;
+    color: #fff;
+  }
+  button {
+    background-color: cyan;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  button:hover {
+    background-color: #00e6e6;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  th, td {
+    padding: 8px;
+    text-align: center;
+  }
+  .income {
+    color: #00ff7f;
+  }
+  .expense {
+    color: #ff4d4d;
+  }
+  .delete-btn {
+    background-color: cyan;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 5px 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .delete-btn:hover {
+    background-color: #00d4d4;
+  }
+  .section-title {
+    text-align: center;
+    color: cyan;
+    margin-top: 20px;
+  }
+</style>
 </head>
 <body>
-  <main class="screen">
-    <header>
-      <h1>محفظتي</h1>
-    </header><section class="card">
-  <div class="section-title">أضف عملية</div>
-  <label>الوصف</label>
-  <input id="desc" type="text" placeholder="مثال: مرتب، قهوة، سحب" />
-  <label>القيمة</label>
-  <input id="amount" type="number" placeholder="0.00" />
-  <label>النوع</label>
+<h1>محفظتي</h1>
+<div class="card">
+  <input type="text" id="desc" placeholder="الوصف">
+  <input type="number" id="amount" placeholder="القيمة">
   <select id="type">
     <option value="income">مدخول</option>
     <option value="expense">مصروف</option>
   </select>
-  <label>التاريخ</label>
-  <input id="date" type="date" />
-  <button id="addBtn" class="btn">أضف</button>
-</section>
+  <button onclick="addEntry()">إضافة</button>
+</div>
+<div class="card" id="entries"></div><div class="card">
+  <h3 class="section-title">الإحصائيات</h3>
+  <p>مجموع المداخيل: <span id="totalIncome" class="income">0</span></p>
+  <p>مجموع المصاريف: <span id="totalExpense" class="expense">0</span></p>
+  <p>الرصيد: <span id="balance">0</span></p>
+</div><div class="card">
+  <h3 class="section-title">آخر ثلاث أسابيع</h3>
+  <table id="weeksTable">
+    <tr><th>الأسبوع</th><th>المداخيل</th><th>المصاريف</th><th>الرصيد</th></tr>
+  </table>
+</div><div class="card">
+  <h3 class="section-title">آخر ثلاث شهور</h3>
+  <table id="monthsTable">
+    <tr><th>الشهر</th><th>المداخيل</th><th>المصاريف</th><th>الرصيد</th></tr>
+  </table>
+</div><script>
+let data = [];
 
-<section class="card">
-  <div class="section-title">اليوم/الشهر</div>
-  <div id="entriesList" class="entries"></div>
-</section>
+function addEntry() {
+  const desc = document.getElementById('desc').value.trim();
+  const amount = parseFloat(document.getElementById('amount').value);
+  const type = document.getElementById('type').value;
+  if (!desc || isNaN(amount)) return;
 
-<section class="card">
-  <div class="section-title">إحصائيات</div>
-  <div class="stats">
-    <div class="stat"><div>مجموع المداخيل</div><div id="totalIncome" class="value val-income">0</div></div>
-    <div class="stat"><div>مجموع المصاريف</div><div id="totalExpense" class="value val-expense">0</div></div>
-    <div class="stat"><div>الرصيد</div><div id="balance" class="value">0</div></div>
-  </div>
-</section>
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const date = `${day}/${month}`;
 
-<section class="card">
-  <div class="section-title">آخر 3 أسابيع</div>
-  <table class="table" id="weeksBody"></table>
-</section>
+  data.push({ desc, amount, type, date });
+  render();
+}
 
-<section class="card">
-  <div class="section-title">آخر 3 أشهر</div>
-  <table class="table" id="monthsBody"></table>
-</section>
+function deleteEntry(index) {
+  data.splice(index, 1);
+  render();
+}
 
-  </main>  <script>
-    const $ = id => document.getElementById(id);
-    const DESC=$('desc'),AMT=$('amount'),TYPE=$('type'),DATE=$('date'),ADD=$('addBtn'),LIST=$('entriesList');
-    const TOTAL_INCOME=$('totalIncome'),TOTAL_EXPENSE=$('totalExpense'),BALANCE=$('balance');
-    const WEEKS_BODY=$('weeksBody'),MONTHS_BODY=$('monthsBody');
+function render() {
+  const container = document.getElementById('entries');
+  container.innerHTML = '';
 
-    const STORAGE_KEY='wallet-v2';
-    let entries=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');
+  const grouped = {};
+  data.forEach((entry, i) => {
+    if (!grouped[entry.date]) grouped[entry.date] = [];
+    grouped[entry.date].push({ ...entry, index: i });
+  });
 
-    function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(entries));}
+  for (const date in grouped) {
+    const section = document.createElement('div');
+    section.innerHTML = `<h3 style="color:cyan;text-align:center;">${date}</h3>`;
+    const table = document.createElement('table');
+    grouped[date].forEach(item => {
+      const row = document.createElement('tr');
+      row.innerHTML = `<td>${item.desc}</td><td class="${item.type === 'income' ? 'income' : 'expense'}">${item.amount.toLocaleString('en-US')}</td><td><button class='delete-btn' onclick='deleteEntry(${item.index})'>Delete</button></td>`;
+      table.appendChild(row);
+    });
+    section.appendChild(table);
+    container.appendChild(section);
+  }
 
-    function formatDate(date){
-      const d=new Date(date);
-      const day=('0'+d.getDate()).slice(-2);
-      const month=('0'+(d.getMonth()+1)).slice(-2);
-      return `${day}/${month}`;
-    }
+  updateStats();
+}
 
-    function formatNumber(num){return Number(num).toLocaleString('en-US');}
-
-    function renderEntries(){
-      LIST.innerHTML='';
-      const grouped={};
-      entries.forEach(e=>{
-        const key=formatDate(e.date);
-        if(!grouped[key])grouped[key]=[];
-        grouped[key].push(e);
-      });
-      const days=Object.keys(grouped).sort((a,b)=>{
-        const [ad,am]=a.split('/').map(Number);const [bd,bm]=b.split('/').map(Number);
-        return bm-am||bd-ad;
-      }).reverse();
-
-      days.forEach(day=>{
-        const div=document.createElement('div');
-        div.className='entry-day';
-        const title=document.createElement('div');
-        title.textContent='_____'+day+'_____' ;
-        div.appendChild(title);
-        grouped[day].forEach(e=>{
-          const row=document.createElement('div');row.className='entry';
-          const desc=document.createElement('div');desc.textContent=e.desc;
-          const val=document.createElement('div');
-          val.innerHTML=e.type==='income'?`<span class="val-income">+${formatNumber(e.amount)}</span>`:`<span class="val-expense">-${formatNumber(e.amount)}</span>`;
-          row.appendChild(desc);row.appendChild(val);
-          div.appendChild(row);
-        });
-        LIST.appendChild(div);
-      });
-    }
-
-    function calcStats(){
-      let inc=0,exp=0;
-      entries.forEach(e=>{if(e.type==='income')inc+=+e.amount;else exp+=+e.amount;});
-      TOTAL_INCOME.textContent=formatNumber(inc);
-      TOTAL_EXPENSE.textContent=formatNumber(exp);
-      BALANCE.textContent=formatNumber(inc-exp);
-    }
-
-    function renderAll(){renderEntries();calcStats();}
-
-    ADD.onclick=()=>{
-      const desc=DESC.value.trim()||'بدون وصف';
-      const amount=+AMT.value;if(!amount){alert('أدخل قيمة صحيحة');return;}
-      const type=TYPE.value;const date=DATE.value||new Date().toISOString().slice(0,10);
-      entries.push({desc,amount,type,date});save();DESC.value='';AMT.value='';renderAll();
-    }
-
-    renderAll();
-  </script></body>
+function updateStats() {
+  let income = 0, expense = 0;
+  data.forEach(e => {
+    if (e.type === 'income') income += e.amount;
+    else expense += e.amount;
+  });
+  document.getElementById('totalIncome').textContent = income.toLocaleString('en-US');
+  document.getElementById('totalExpense').textContent = expense.toLocaleString('en-US');
+  document.getElementById('balance').textContent = (income - expense).toLocaleString('en-US');
+}
+</script></body>
 </html>
