@@ -31,7 +31,7 @@
       padding:18px 8px;
     }
     .screen{
-      width:420px; /* mobile frame width for preview */
+      width:420px;
       max-width:100%;
       display:flex;
       flex-direction:column;
@@ -41,7 +41,6 @@
     h1{
       margin:0;
       font-size:24px;
-      letter-spacing:0.6px;
     }
     .card{
       background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent), var(--card);
@@ -49,8 +48,6 @@
       padding:14px;
       box-shadow:0 6px 18px rgba(0,0,0,0.6);
     }
-    .form-row{display:flex;gap:10px;align-items:center}
-    .col{flex:1}
     label{display:block;font-size:13px;margin-bottom:6px;color:#cfcfcf}
     input[type="text"], input[type="number"], select, input[type="date"]{
       width:100%;
@@ -62,312 +59,136 @@
       outline:none;
       font-size:15px;
     }
-    input:focus, select:focus{box-shadow:0 0 0 4px rgba(0,188,212,0.08);border-color:var(--accent)}
     .btn{
       display:inline-block;padding:10px 16px;border-radius:12px;background:var(--cyan);color:#002428;font-weight:700;border:none;font-size:15px;cursor:pointer;
       box-shadow:0 6px 14px rgba(0,188,212,0.12);
     }
-    .small{font-size:13px}
-    .spaced{display:flex;gap:10px;align-items:center}/* Entries list */
-.entries{display:flex;flex-direction:column;gap:10px;margin-top:6px}
-.entry{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:10px;background:rgba(0,0,0,0.16)}
-.entry .meta{display:flex;flex-direction:column;gap:4px}
-.muted{color:#9e9e9e;font-size:13px}
-
-/* Tables */
-.table{width:100%;border-collapse:collapse;margin-top:8px}
-.table th,.table td{padding:8px 6px;text-align:right;font-size:14px}
-.table thead th{color:#bdbdbd;font-size:13px}
-.separator{height:1px;background:rgba(255,255,255,0.03);margin:10px 0;border-radius:6px}
-
-/* Stats */
-.stats{display:flex;gap:8px;flex-wrap:wrap}
-.stat{flex:1;min-width:120px;padding:12px;border-radius:12px;background:rgba(255,255,255,0.02);text-align:center}
-.stat .value{font-weight:800;font-size:18px}
-
-/* responsive smaller devices */
-@media (max-width:420px){
-  .screen{padding:0}
-  .card{padding:12px}
-}
-
-/* utility colors */
-.val-income{color:var(--income);font-weight:700}
-.val-expense{color:var(--expense);font-weight:700}
-
-/* headings */
-.section-title{font-size:14px;color:#cfcfcf;margin-bottom:6px}
-
-/* footer spacing */
-.footer-space{height:18px}
-
+    .entries{display:flex;flex-direction:column;gap:10px;margin-top:6px}
+    .entry-day{margin-top:10px;border-top:1px solid rgba(255,255,255,0.05);padding-top:6px}
+    .entry{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:10px;background:rgba(0,0,0,0.16)}
+    .val-income{color:var(--income);font-weight:700}
+    .val-expense{color:var(--expense);font-weight:700}
+    .table{width:100%;border-collapse:collapse;margin-top:8px}
+    .table th,.table td{padding:8px 6px;text-align:right;font-size:14px}
+    .table thead th{color:#bdbdbd;font-size:13px}
+    .stats{display:flex;gap:8px;flex-wrap:wrap}
+    .stat{flex:1;min-width:120px;padding:12px;border-radius:12px;background:rgba(255,255,255,0.02);text-align:center}
+    .stat .value{font-weight:800;font-size:18px}
+    .section-title{font-size:14px;color:#cfcfcf;margin-bottom:6px}
   </style>
 </head>
 <body>
   <main class="screen">
     <header>
       <h1>محفظتي</h1>
-      <div class="muted small">نسخة للهاتف</div>
-    </header><!-- INPUT CARD -->
-<section class="card" aria-labelledby="add-title">
-  <div id="add-title" class="section-title">أضف عملية</div>
-
-  <div class="form-row" style="flex-direction:column;gap:10px">
-    <div class="col">
-      <label for="desc">الوصف</label>
-      <input id="desc" type="text" placeholder="مثال: مرتب، قهوة، سحب تلقائي" />
-    </div>
-
-    <div class="form-row" style="width:100%">
-      <div class="col">
-        <label for="amount">قيمة</label>
-        <input id="amount" type="number" placeholder="0.00" />
-      </div>
-      <div style="width:140px">
-        <label for="type">نوع</label>
-        <select id="type">
-          <option value="income">مدخول</option>
-          <option value="expense">مصروف</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="form-row" style="width:100%;align-items:center">
-      <div style="flex:1">
-        <label for="date">التاريخ</label>
-        <input id="date" type="date" />
-      </div>
-      <div style="width:110px;display:flex;align-items:flex-end;justify-content:flex-end">
-        <button id="addBtn" class="btn">أضف</button>
-      </div>
-    </div>
-  </div>
+    </header><section class="card">
+  <div class="section-title">أضف عملية</div>
+  <label>الوصف</label>
+  <input id="desc" type="text" placeholder="مثال: مرتب، قهوة، سحب" />
+  <label>القيمة</label>
+  <input id="amount" type="number" placeholder="0.00" />
+  <label>النوع</label>
+  <select id="type">
+    <option value="income">مدخول</option>
+    <option value="expense">مصروف</option>
+  </select>
+  <label>التاريخ</label>
+  <input id="date" type="date" />
+  <button id="addBtn" class="btn">أضف</button>
 </section>
 
-<!-- ENTRIES TABLE -->
 <section class="card">
-  <div class="section-title">_______اليوم/الشهر_______</div>
-  <div class="entries" id="entriesList">
-    <!-- dynamic rows -->
-  </div>
-
-  <div class="separator"></div>
-  <table class="table" aria-hidden="false">
-    <thead>
-      <tr><th style="text-align:right">الوصف</th><th style="text-align:left">القيمة</th></tr>
-    </thead>
-    <tbody id="entriesTableBody"></tbody>
-  </table>
+  <div class="section-title">اليوم/الشهر</div>
+  <div id="entriesList" class="entries"></div>
 </section>
 
-<!-- STATS -->
 <section class="card">
   <div class="section-title">إحصائيات</div>
   <div class="stats">
-    <div class="stat">
-      <div class="muted">مجموع المداخيل</div>
-      <div id="totalIncome" class="value val-income">0</div>
-    </div>
-    <div class="stat">
-      <div class="muted">مجموع المصاريف</div>
-      <div id="totalExpense" class="value val-expense">0</div>
-    </div>
-    <div class="stat">
-      <div class="muted">الرصيد</div>
-      <div id="balance" class="value">0</div>
-    </div>
+    <div class="stat"><div>مجموع المداخيل</div><div id="totalIncome" class="value val-income">0</div></div>
+    <div class="stat"><div>مجموع المصاريف</div><div id="totalExpense" class="value val-expense">0</div></div>
+    <div class="stat"><div>الرصيد</div><div id="balance" class="value">0</div></div>
   </div>
 </section>
 
-<!-- LAST 3 WEEKS -->
 <section class="card">
   <div class="section-title">آخر 3 أسابيع</div>
-  <table class="table">
-    <thead>
-      <tr><th>الأسبوع</th><th>المداخيل</th><th>المصاريف</th><th>الرصيد</th></tr>
-    </thead>
-    <tbody id="weeksBody"></tbody>
-  </table>
+  <table class="table" id="weeksBody"></table>
 </section>
 
-<!-- LAST 3 MONTHS -->
 <section class="card">
   <div class="section-title">آخر 3 أشهر</div>
-  <table class="table">
-    <thead>
-      <tr><th>الشهر</th><th>المداخيل</th><th>المصاريف</th><th>الرصيد</th></tr>
-    </thead>
-    <tbody id="monthsBody"></tbody>
-  </table>
+  <table class="table" id="monthsBody"></table>
 </section>
 
-<div class="footer-space"></div>
-
   </main>  <script>
-    // Utilities
     const $ = id => document.getElementById(id);
-    const DESC = $('desc');
-    const AMT = $('amount');
-    const TYPE = $('type');
-    const DATE = $('date');
-    const ADD = $('addBtn');
-    const ENTRIES_LIST = $('entriesList');
-    const ENTRIES_TABLE = $('entriesTableBody');
-    const TOTAL_INCOME = $('totalIncome');
-    const TOTAL_EXPENSE = $('totalExpense');
-    const BALANCE = $('balance');
-    const WEEKS_BODY = $('weeksBody');
-    const MONTHS_BODY = $('monthsBody');
+    const DESC=$('desc'),AMT=$('amount'),TYPE=$('type'),DATE=$('date'),ADD=$('addBtn'),LIST=$('entriesList');
+    const TOTAL_INCOME=$('totalIncome'),TOTAL_EXPENSE=$('totalExpense'),BALANCE=$('balance');
+    const WEEKS_BODY=$('weeksBody'),MONTHS_BODY=$('monthsBody');
 
-    // init date to today
-    const today = new Date();
-    DATE.value = today.toISOString().slice(0,10);
+    const STORAGE_KEY='wallet-v2';
+    let entries=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');
 
-    // data storage
-    const STORAGE_KEY = 'my-wallet-entries-v1';
-    let entries = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(entries));}
 
-    function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(entries)); }
-
-    function formatDate(d){
-      const dt = new Date(d);
-      return dt.toLocaleDateString('ar-EG');
+    function formatDate(date){
+      const d=new Date(date);
+      const day=('0'+d.getDate()).slice(-2);
+      const month=('0'+(d.getMonth()+1)).slice(-2);
+      return `${day}/${month}`;
     }
 
-    function formatNumber(n){
-      return Number(n).toLocaleString('ar-EG');
-    }
+    function formatNumber(num){return Number(num).toLocaleString('en-US');}
 
     function renderEntries(){
-      ENTRIES_LIST.innerHTML='';
-      ENTRIES_TABLE.innerHTML='';
-      entries.slice().reverse().forEach((e, idx) =>{
-        const row = document.createElement('div');
-        row.className='entry';
-        const meta = document.createElement('div'); meta.className='meta';
-        const d1 = document.createElement('div'); d1.textContent = formatDate(e.date) + ' — ' + e.desc;
-        const d2 = document.createElement('div'); d2.className='muted small'; d2.textContent = e.type === 'income' ? 'مدخول' : 'مصروف';
-        meta.appendChild(d1); meta.appendChild(d2);
-        const val = document.createElement('div');
-        val.innerHTML = (e.type==='income'? '<span class="val-income">+'+formatNumber(e.amount)+'</span>' : '<span class="val-expense">-'+formatNumber(e.amount)+'</span>');
-        // delete button
-        const del = document.createElement('button'); del.textContent='حذف';
-        del.style.marginRight='8px'; del.className='small';
-        del.onclick = ()=>{ if(confirm('هل تريد حذف هذه العملية؟')){ entries.splice(entries.length-1-idx,1); save(); renderAll(); } };
+      LIST.innerHTML='';
+      const grouped={};
+      entries.forEach(e=>{
+        const key=formatDate(e.date);
+        if(!grouped[key])grouped[key]=[];
+        grouped[key].push(e);
+      });
+      const days=Object.keys(grouped).sort((a,b)=>{
+        const [ad,am]=a.split('/').map(Number);const [bd,bm]=b.split('/').map(Number);
+        return bm-am||bd-ad;
+      }).reverse();
 
-        const rightWrap = document.createElement('div'); rightWrap.style.display='flex'; rightWrap.style.alignItems='center';
-        rightWrap.appendChild(val); rightWrap.appendChild(del);
-
-        row.appendChild(meta); row.appendChild(rightWrap);
-        ENTRIES_LIST.appendChild(row);
-
-        // table row
-        const tr = document.createElement('tr');
-        const tdDesc = document.createElement('td'); tdDesc.textContent = e.desc + ' — ' + formatDate(e.date);
-        const tdVal = document.createElement('td'); tdVal.style.textAlign='left'; tdVal.innerHTML = (e.type==='income'? '<span class="val-income">+'+formatNumber(e.amount)+'</span>':'<span class="val-expense">-'+formatNumber(e.amount)+'</span>');
-        tr.appendChild(tdDesc); tr.appendChild(tdVal);
-        ENTRIES_TABLE.appendChild(tr);
+      days.forEach(day=>{
+        const div=document.createElement('div');
+        div.className='entry-day';
+        const title=document.createElement('div');
+        title.textContent='_____'+day+'_____' ;
+        div.appendChild(title);
+        grouped[day].forEach(e=>{
+          const row=document.createElement('div');row.className='entry';
+          const desc=document.createElement('div');desc.textContent=e.desc;
+          const val=document.createElement('div');
+          val.innerHTML=e.type==='income'?`<span class="val-income">+${formatNumber(e.amount)}</span>`:`<span class="val-expense">-${formatNumber(e.amount)}</span>`;
+          row.appendChild(desc);row.appendChild(val);
+          div.appendChild(row);
+        });
+        LIST.appendChild(div);
       });
     }
 
     function calcStats(){
-      let income=0, expense=0;
-      entries.forEach(e=>{ if(e.type==='income') income+=Number(e.amount); else expense+=Number(e.amount); });
-      TOTAL_INCOME.textContent = formatNumber(income);
-      TOTAL_EXPENSE.textContent = formatNumber(expense);
-      BALANCE.textContent = formatNumber(income-expense);
+      let inc=0,exp=0;
+      entries.forEach(e=>{if(e.type==='income')inc+=+e.amount;else exp+=+e.amount;});
+      TOTAL_INCOME.textContent=formatNumber(inc);
+      TOTAL_EXPENSE.textContent=formatNumber(exp);
+      BALANCE.textContent=formatNumber(inc-exp);
     }
 
-    // helpers for week/month ranges
-    function startOfWeek(date){ // monday
-      const d = new Date(date);
-      const day = (d.getDay() + 6) % 7; // Monday = 0
-      d.setDate(d.getDate() - day);
-      d.setHours(0,0,0,0);
-      return d;
-    }
-    function endOfWeek(date){ const s = startOfWeek(date); s.setDate(s.getDate()+6); s.setHours(23,59,59,999); return s; }
+    function renderAll(){renderEntries();calcStats();}
 
-    function getWeeksSummary(){
-      const now = new Date();
-      const summaries = [];
-      for(let i=0;i<3;i++){
-        const ref = new Date();
-        ref.setDate(now.getDate() - i*7);
-        const start = startOfWeek(ref);
-        const end = endOfWeek(ref);
-        const label = start.toLocaleDateString('ar-EG') + ' — ' + end.toLocaleDateString('ar-EG');
-        let inc=0, exp=0;
-        entries.forEach(e=>{
-          const d = new Date(e.date);
-          if(d >= start && d <= end){ if(e.type==='income') inc+=Number(e.amount); else exp+=Number(e.amount); }
-        });
-        summaries.push({label,inc,exp,balance:inc-exp});
-      }
-      return summaries;
+    ADD.onclick=()=>{
+      const desc=DESC.value.trim()||'بدون وصف';
+      const amount=+AMT.value;if(!amount){alert('أدخل قيمة صحيحة');return;}
+      const type=TYPE.value;const date=DATE.value||new Date().toISOString().slice(0,10);
+      entries.push({desc,amount,type,date});save();DESC.value='';AMT.value='';renderAll();
     }
 
-    function getMonthsSummary(){
-      const now = new Date();
-      const summaries = [];
-      for(let i=0;i<3;i++){
-        const m = new Date(now.getFullYear(), now.getMonth()-i, 1);
-        const start = new Date(m.getFullYear(), m.getMonth(), 1); start.setHours(0,0,0,0);
-        const end = new Date(m.getFullYear(), m.getMonth()+1, 0); end.setHours(23,59,59,999);
-        const label = start.toLocaleString('ar-EG', {month:'long', year:'numeric'});
-        let inc=0, exp=0;
-        entries.forEach(e=>{
-          const d = new Date(e.date);
-          if(d >= start && d <= end){ if(e.type==='income') inc+=Number(e.amount); else exp+=Number(e.amount); }
-        });
-        summaries.push({label,inc,exp,balance:inc-exp});
-      }
-      return summaries;
-    }
-
-    function renderSummaries(){
-      // weeks
-      WEEKS_BODY.innerHTML='';
-      const wsum = getWeeksSummary();
-      wsum.forEach(s=>{
-        const tr=document.createElement('tr');
-        const tdWeek=document.createElement('td'); tdWeek.textContent=s.label;
-        const tdInc=document.createElement('td'); tdInc.innerHTML='<span class="val-income">'+formatNumber(s.inc)+'</span>';
-        const tdExp=document.createElement('td'); tdExp.innerHTML='<span class="val-expense">'+formatNumber(s.exp)+'</span>';
-        const tdBal=document.createElement('td'); tdBal.textContent=''+formatNumber(s.balance);
-        tr.appendChild(tdWeek); tr.appendChild(tdInc); tr.appendChild(tdExp); tr.appendChild(tdBal);
-        WEEKS_BODY.appendChild(tr);
-      });
-
-      // months
-      MONTHS_BODY.innerHTML='';
-      const msum = getMonthsSummary();
-      msum.forEach(s=>{
-        const tr=document.createElement('tr');
-        const tdMon=document.createElement('td'); tdMon.textContent=s.label;
-        const tdInc=document.createElement('td'); tdInc.innerHTML='<span class="val-income">'+formatNumber(s.inc)+'</span>';
-        const tdExp=document.createElement('td'); tdExp.innerHTML='<span class="val-expense">'+formatNumber(s.exp)+'</span>';
-        const tdBal=document.createElement('td'); tdBal.textContent=''+formatNumber(s.balance);
-        tr.appendChild(tdMon); tr.appendChild(tdInc); tr.appendChild(tdExp); tr.appendChild(tdBal);
-        MONTHS_BODY.appendChild(tr);
-      });
-    }
-
-    function renderAll(){ renderEntries(); calcStats(); renderSummaries(); }
-
-    ADD.addEventListener('click', ()=>{
-      const desc = DESC.value.trim() || 'بدون وصف';
-      const amount = Number(AMT.value || 0);
-      const type = TYPE.value;
-      const date = DATE.value || new Date().toISOString().slice(0,10);
-      if(!amount || amount <= 0){ alert('رجاءً أدخل قيمة صحيحة أكبر من صفر'); return; }
-      entries.push({desc, amount, type, date});
-      save();
-      DESC.value=''; AMT.value=''; TYPE.value='income'; DATE.value = new Date().toISOString().slice(0,10);
-      renderAll();
-    });
-
-    // initial render
     renderAll();
   </script></body>
 </html>
